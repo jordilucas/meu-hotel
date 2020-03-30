@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import com.jordilucas.meuhotel.data.Hotel
+import com.jordilucas.meuhotel.dialogs.AboutDialogFragment
 import com.jordilucas.meuhotel.fragments.HotelDetailsFragment
 import com.jordilucas.meuhotel.fragments.HotelListFragment
 
@@ -56,6 +57,10 @@ class HotelActivity : AppCompatActivity(), HotelListFragment.OnHotelClickListene
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId){
+            R.id.action_info ->
+                AboutDialogFragment().show(supportFragmentManager, "sobre")
+        }
         return super.onOptionsItemSelected(item)
     }
 
