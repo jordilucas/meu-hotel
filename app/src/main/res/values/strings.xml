@@ -8,4 +8,7 @@
     <string name="about_title">Meu Hotel</string>
     <string name="about_message">Desenvolvido por Jordi Lucas</string>
     <string name="about_button_site">Site</string>
+    <string name="form_label_name">Nome</string>
+    <string name="form_label_address">Endereço</string>
+    <string name="form_label_rating">Classificação</string>
 </resources>
