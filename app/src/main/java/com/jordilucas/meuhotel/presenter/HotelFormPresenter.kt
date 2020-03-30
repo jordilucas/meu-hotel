@@ -10,7 +10,7 @@ class HotelFormPresenter(private val view:HotelFormView, private val repository:
     private val validator = HotelValidator()
 
     fun loadHotel(id:Long){
-        repository.hotelById(id){
+        repository.hotelById(id){ hotel ->
             if(hotel!=null){
                 view.showHotel(hotel)
             }
