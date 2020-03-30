@@ -11,4 +11,5 @@
     <string name="form_label_name">Nome</string>
     <string name="form_label_address">Endereço</string>
     <string name="form_label_rating">Classificação</string>
+    <string name="error_invalidate_hotel">Hotel não preenchido corretamente</string>
 </resources>
