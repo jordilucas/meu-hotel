@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.jordilucas.meuhotel.R
-import com.jordilucas.meuhotel.data.Hotel
+import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.presenter.HotelDetailsPresenter
 import com.jordilucas.meuhotel.repository.MemoryRepository
 import com.jordilucas.meuhotel.view.HotelDetailsView

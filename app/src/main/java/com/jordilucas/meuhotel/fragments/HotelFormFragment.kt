@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.jordilucas.meuhotel.R
-import com.jordilucas.meuhotel.data.Hotel
+import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.presenter.HotelFormPresenter
 import com.jordilucas.meuhotel.repository.MemoryRepository
 import com.jordilucas.meuhotel.view.HotelFormView

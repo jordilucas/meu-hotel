@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.ListFragment
 import com.jordilucas.meuhotel.R
-import com.jordilucas.meuhotel.data.Hotel
+import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.presenter.HotelListPresenter
 import com.jordilucas.meuhotel.repository.MemoryRepository
 import com.jordilucas.meuhotel.view.HotelListView
@@ -23,6 +23,7 @@ class HotelListFragment: ListFragment(), HotelListView, AdapterView.OnItemLongCl
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        retainInstance = true
         presenter.searchHotels("")
         listView.onItemLongClickListener = this
     }

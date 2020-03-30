@@ -1,6 +1,6 @@
 package com.jordilucas.meuhotel.presenter
 
-import com.jordilucas.meuhotel.data.Hotel
+import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.repository.HotelRepository
 import com.jordilucas.meuhotel.view.HotelListView
 
@@ -12,6 +12,16 @@ class HotelListPresenter(
     private var lastTerm=""
     private var inDeleteMode = false
     private val selectedItens = mutableListOf<Hotel>()
+
+    fun init(){
+        if(inDeleteMode){
+            showDeleteMode()
+            view.updateSelectionCountText(selectedItens.size)
+            view.showSelectedHotels(selectedItens)
+        }else{
+            refresh()
+        }
+    }
 
     fun searchHotels(term:String) {
         lastTerm = term

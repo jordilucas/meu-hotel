@@ -1,6 +1,6 @@
 package com.jordilucas.meuhotel.view
 
-import com.jordilucas.meuhotel.data.Hotel
+import com.jordilucas.meuhotel.model.Hotel
 
 interface HotelListView {
     fun showHotels(hotels:List<Hotel>)

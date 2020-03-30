@@ -1,6 +1,6 @@
 package com.jordilucas.meuhotel.repository
 
-import com.jordilucas.meuhotel.data.Hotel
+import com.jordilucas.meuhotel.model.Hotel
 
 interface HotelRepository {
     fun save(hotel: Hotel)

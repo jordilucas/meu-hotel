@@ -1,6 +1,6 @@
-package com.jordilucas.meuhotel.validator
+package com.jordilucas.meuhotel.repository
 
-import com.jordilucas.meuhotel.data.Hotel
+import com.jordilucas.meuhotel.model.Hotel
 
 class HotelValidator {
 

@@ -1,8 +1,8 @@
 package com.jordilucas.meuhotel.presenter
 
-import com.jordilucas.meuhotel.data.Hotel
+import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.repository.HotelRepository
-import com.jordilucas.meuhotel.validator.HotelValidator
+import com.jordilucas.meuhotel.repository.HotelValidator
 import com.jordilucas.meuhotel.view.HotelFormView
 
 class HotelFormPresenter(private val view:HotelFormView, private val repository: HotelRepository) {

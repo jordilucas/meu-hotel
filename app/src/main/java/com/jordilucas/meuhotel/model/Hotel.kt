@@ -1,4 +1,4 @@
-package com.jordilucas.meuhotel.data
+package com.jordilucas.meuhotel.model
 
 data class Hotel(
     var id:Long=0,
