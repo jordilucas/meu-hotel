@@ -11,10 +11,12 @@ import androidx.appcompat.widget.SearchView
 import com.jordilucas.meuhotel.data.Hotel
 import com.jordilucas.meuhotel.dialogs.AboutDialogFragment
 import com.jordilucas.meuhotel.fragments.HotelDetailsFragment
+import com.jordilucas.meuhotel.fragments.HotelFormFragment
 import com.jordilucas.meuhotel.fragments.HotelListFragment
 
 class HotelActivity : AppCompatActivity(), HotelListFragment.OnHotelClickListener,
-                    SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener{
+                    SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener,
+                    HotelFormFragment.OnHotelSavedListener{
 
     private var lastSearchTerm:String =""
     private var searchView:SearchView? = null
@@ -60,6 +62,8 @@ class HotelActivity : AppCompatActivity(), HotelListFragment.OnHotelClickListene
         when(item?.itemId){
             R.id.action_info ->
                 AboutDialogFragment().show(supportFragmentManager, "sobre")
+            R.id.action_new ->
+                HotelFormFragment.newInstance().open(supportFragmentManager)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -106,6 +110,10 @@ class HotelActivity : AppCompatActivity(), HotelListFragment.OnHotelClickListene
 
     companion object{
         const val EXTRA_SEARCH_TERM = "lastSearch"
+    }
+
+    override fun onHotelSaved(hotel: Hotel) {
+        listFragment.search(lastSearchTerm)
     }
 
 }
