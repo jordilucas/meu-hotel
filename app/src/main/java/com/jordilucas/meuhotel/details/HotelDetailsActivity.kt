@@ -1,10 +1,10 @@
-package com.jordilucas.meuhotel
+package com.jordilucas.meuhotel.details
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.jordilucas.meuhotel.fragments.HotelDetailsFragment
+import com.jordilucas.meuhotel.R
 
 class HotelDetailsActivity : AppCompatActivity() {
 

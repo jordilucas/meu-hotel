@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HotelDetailsActivity"
+        <activity android:name=".details.HotelDetailsActivity"
             android:parentActivityName=".HotelActivity"/>
         <activity android:name=".HotelActivity"
             android:launchMode="singleTop">

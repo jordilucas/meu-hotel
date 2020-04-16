@@ -8,9 +8,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import com.jordilucas.meuhotel.details.HotelDetailsActivity
 import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.dialogs.AboutDialogFragment
-import com.jordilucas.meuhotel.fragments.HotelDetailsFragment
+import com.jordilucas.meuhotel.details.HotelDetailsFragment
 import com.jordilucas.meuhotel.fragments.HotelFormFragment
 import com.jordilucas.meuhotel.fragments.HotelListFragment
 
