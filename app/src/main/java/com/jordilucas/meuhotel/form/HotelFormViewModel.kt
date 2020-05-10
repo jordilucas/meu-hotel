@@ -6,7 +6,7 @@ import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.repository.HotelRepository
 import com.jordilucas.meuhotel.repository.HotelValidator
 
-class HotelFormViewModel(private val repository: HotelRepository): ViewModel() {
+class HotelFormViewModel(private val repository: HotelRepository):ViewModel() {
 
     private val validator by lazy { HotelValidator() }
 
