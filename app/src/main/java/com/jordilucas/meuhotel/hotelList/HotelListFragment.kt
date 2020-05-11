@@ -15,16 +15,17 @@ import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.presenter.HotelListPresenter
 import com.jordilucas.meuhotel.repository.MemoryRepository
 import com.jordilucas.meuhotel.view.HotelListView
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class HotelListFragment: ListFragment(), HotelListView, AdapterView.OnItemLongClickListener, ActionMode.Callback {
 
-    private val presenter = HotelListPresenter(this, MemoryRepository)
+    private val viewModel:HotelListViewModel by sharedViewModel()
     private var actionMode: ActionMode? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         retainInstance = true
-        presenter.searchHotels("")
+
         listView.onItemLongClickListener = this
     }
 
@@ -43,15 +44,15 @@ class HotelListFragment: ListFragment(), HotelListView, AdapterView.OnItemLongCl
     override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
         super.onListItemClick(l, v, position, id)
         val hotel =l?.getItemAtPosition(position) as Hotel
-        presenter.showHotelDetails(hotel)
+        //presenter.showHotelDetails(hotel)
     }
 
     fun search(text:String){
-        presenter.searchHotels(text)
+        //presenter.searchHotels(text)
     }
 
     fun clearSearch(){
-        presenter.searchHotels("")
+        //presenter.searchHotels("")
     }
 
     override fun onItemLongClick(
@@ -63,8 +64,8 @@ class HotelListFragment: ListFragment(), HotelListView, AdapterView.OnItemLongCl
         val consumed = (actionMode == null)
         if(consumed){
             val hotel = parent?.getItemAtPosition(position) as Hotel
-            presenter.showDeleteMode()
-            presenter.selectHotel(hotel)
+            //presenter.showDeleteMode()
+            //presenter.selectHotel(hotel)
         }
         return consumed
     }
@@ -104,7 +105,7 @@ class HotelListFragment: ListFragment(), HotelListView, AdapterView.OnItemLongCl
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
         if(item?.itemId == R.id.action_delete){
-            presenter.deleteSelected { hotels ->
+            //presenter.deleteSelected { hotels ->
                 if(activity is OnHotelDeleteListener){
                     (activity as OnHotelDeleteListener).onHotelsDelete(hotels)
                 }
