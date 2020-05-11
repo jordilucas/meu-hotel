@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/fragmentList"
-        android:name="com.jordilucas.meuhotel.fragments.HotelListFragment"
+        android:name="com.jordilucas.meuhotel.hotelList.HotelListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

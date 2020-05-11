@@ -12,8 +12,8 @@ import com.jordilucas.meuhotel.details.HotelDetailsActivity
 import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.dialogs.AboutDialogFragment
 import com.jordilucas.meuhotel.details.HotelDetailsFragment
-import com.jordilucas.meuhotel.fragments.HotelFormFragment
-import com.jordilucas.meuhotel.fragments.HotelListFragment
+import com.jordilucas.meuhotel.form.HotelFormFragment
+import com.jordilucas.meuhotel.hotelList.HotelListFragment
 
 class HotelActivity : AppCompatActivity(), HotelListFragment.OnHotelClickListener,
                     SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener,

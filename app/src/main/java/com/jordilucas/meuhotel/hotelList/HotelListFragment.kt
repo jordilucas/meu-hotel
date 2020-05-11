@@ -1,4 +1,4 @@
-package com.jordilucas.meuhotel.fragments
+package com.jordilucas.meuhotel.hotelList
 
 import android.os.Bundle
 import android.view.Menu

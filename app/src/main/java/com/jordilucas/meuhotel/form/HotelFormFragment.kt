@@ -1,4 +1,4 @@
-package com.jordilucas.meuhotel.fragments
+package com.jordilucas.meuhotel.form
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import com.jordilucas.meuhotel.R
-import com.jordilucas.meuhotel.form.HotelFormViewModel
 import com.jordilucas.meuhotel.model.Hotel
 import kotlinx.android.synthetic.main.fragment_hotel_form.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -93,7 +92,9 @@ class HotelFormFragment : DialogFragment(){
 
     fun open(fm:FragmentManager){
         if(fm.findFragmentByTag(DIALOG_TAG) == null){
-            show(fm, DIALOG_TAG)
+            show(fm,
+                DIALOG_TAG
+            )
         }
     }
 
@@ -101,7 +102,8 @@ class HotelFormFragment : DialogFragment(){
         private const val DIALOG_TAG = "editDialog"
         private const val EXTRA_HOTEL_ID = "hotel_id"
 
-        fun newInstance(hotelId: Long = 0) = HotelFormFragment().apply {
+        fun newInstance(hotelId: Long = 0) = HotelFormFragment()
+            .apply {
             arguments = Bundle().apply {
                 putLong(EXTRA_HOTEL_ID, hotelId)
             }
