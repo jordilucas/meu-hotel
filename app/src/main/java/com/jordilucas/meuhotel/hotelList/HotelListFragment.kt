@@ -10,6 +10,8 @@ import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.ListFragment
+import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import com.jordilucas.meuhotel.R
 import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.presenter.HotelListPresenter
@@ -17,24 +19,64 @@ import com.jordilucas.meuhotel.repository.MemoryRepository
 import com.jordilucas.meuhotel.view.HotelListView
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class HotelListFragment: ListFragment(), HotelListView, AdapterView.OnItemLongClickListener, ActionMode.Callback {
+class HotelListFragment: ListFragment(), AdapterView.OnItemLongClickListener, ActionMode.Callback {
 
     private val viewModel:HotelListViewModel by sharedViewModel()
     private var actionMode: ActionMode? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        retainInstance = true
-
         listView.onItemLongClickListener = this
+
+        viewModel.showDetailsCommand().observe(viewLifecycleOwner, Observer {
+                hotel ->
+            if(hotel!= null){
+                showHotelDetail(hotel)
+            }
+        })
+        viewModel.isInDeleteMode().observe(viewLifecycleOwner, Observer {
+                deleteMode ->
+            if(deleteMode == true){
+                showDeleteMode()
+            }else{
+                hideDeleteMode()
+            }
+        })
+        viewModel.selectedHotels().observe(viewLifecycleOwner, Observer {
+                hotels ->
+            if(hotels != null){
+                showSelectedHotels(hotels)
+            }
+        })
+        viewModel.selectionCount().observe(viewLifecycleOwner, Observer {
+                count ->
+            if(count != null){
+                updateSelectionCountText(count)
+            }
+        })
+        viewModel.showDeletedMessage().observe(viewLifecycleOwner, Observer {
+                count ->
+            if(count != null && count > 0){
+                showMessageHotelsDeleted(count)
+            }
+        })
+        viewModel.getHotels()?.observe(viewLifecycleOwner, Observer {
+                hotels ->
+            if(hotels != null){
+                showHotels(hotels)
+            }
+        })
+        if(viewModel.getHotels()?.value == null){
+            search()
+        }
     }
 
-    override fun showHotels(hotels: List<Hotel>) {
+    private fun showHotels(hotels: List<Hotel>) {
         val adapter = ArrayAdapter<Hotel>(requireContext(),android.R.layout.simple_list_item_activated_1, hotels)
         listAdapter = adapter
     }
 
-    override fun showHotelDetail(hotel: Hotel) {
+    private fun showHotelDetail(hotel: Hotel) {
         if(activity is OnHotelClickListener){
             val listener = activity as OnHotelClickListener
             listener.onHotelClick(hotel)
@@ -44,15 +86,11 @@ class HotelListFragment: ListFragment(), HotelListView, AdapterView.OnItemLongCl
     override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
         super.onListItemClick(l, v, position, id)
         val hotel =l?.getItemAtPosition(position) as Hotel
-        //presenter.showHotelDetails(hotel)
+        viewModel.selectHotel(hotel)
     }
 
-    fun search(text:String){
-        //presenter.searchHotels(text)
-    }
-
-    fun clearSearch(){
-        //presenter.searchHotels("")
+    fun search(text:String=""){
+        viewModel.search(text)
     }
 
     override fun onItemLongClick(
@@ -64,20 +102,20 @@ class HotelListFragment: ListFragment(), HotelListView, AdapterView.OnItemLongCl
         val consumed = (actionMode == null)
         if(consumed){
             val hotel = parent?.getItemAtPosition(position) as Hotel
-            //presenter.showDeleteMode()
-            //presenter.selectHotel(hotel)
+            viewModel.setInDeleteMode(true)
+            viewModel.selectHotel(hotel)
         }
         return consumed
     }
 
-    override fun showDeleteMode() {
+    private fun showDeleteMode() {
         val appCompatActivity = (activity as AppCompatActivity)
         actionMode = appCompatActivity.startSupportActionMode(this)
         listView.onItemLongClickListener = null
         listView.choiceMode = ListView.CHOICE_MODE_MULTIPLE
     }
 
-    override fun hideDeleteMode() {
+    fun hideDeleteMode() {
         listView.onItemLongClickListener = this
         for (i in 0 until listView.count){
             listView.setItemChecked(i, false)
@@ -88,11 +126,11 @@ class HotelListFragment: ListFragment(), HotelListView, AdapterView.OnItemLongCl
         }
     }
 
-    override fun updateSelectionCountText(count: Int) {
+    private fun updateSelectionCountText(count: Int) {
         view?.post { actionMode?.title = resources.getQuantityString(R.plurals.list_hotel_selected, count, count) }
     }
 
-    override fun showSelectedHotels(hotels: List<Hotel>) {
+    private fun showSelectedHotels(hotels: List<Hotel>) {
         listView.post {
             for(i in 0 until listView.count){
                 val hotel = listView.getItemAtPosition(i) as Hotel
@@ -106,10 +144,8 @@ class HotelListFragment: ListFragment(), HotelListView, AdapterView.OnItemLongCl
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
         if(item?.itemId == R.id.action_delete){
             //presenter.deleteSelected { hotels ->
-                if(activity is OnHotelDeleteListener){
-                    (activity as OnHotelDeleteListener).onHotelsDelete(hotels)
-                }
-            }
+            viewModel.deleteSelected()
+
             return true
         }
         return false
@@ -124,12 +160,19 @@ class HotelListFragment: ListFragment(), HotelListView, AdapterView.OnItemLongCl
 
     override fun onDestroyActionMode(mode: ActionMode?) {
         actionMode = null
-        presenter.hideDeleteMode()
+        viewModel.setInDeleteMode(false)
     }
 
-    interface OnHotelDeleteListener{
-        fun onHotelsDelete(hotels: List<Hotel>)
+    private fun showMessageHotelsDeleted(count:Int){
+        Snackbar.make(listView, getString(R.string.message_hotels_deleted, count),
+            Snackbar.LENGTH_LONG)
+            .setAction(R.string.undo){
+                viewModel.undoDelete()
+            }
+            .show()
     }
+
+
 
     interface OnHotelClickListener{
         fun onHotelClick(hotel:Hotel)
