@@ -1,4 +1,4 @@
-package com.jordilucas.meuhotel.dialogs
+package com.jordilucas.meuhotel.common
 
 import android.app.AlertDialog
 import android.app.Dialog

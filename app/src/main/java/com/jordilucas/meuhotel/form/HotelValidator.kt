@@ -1,4 +1,4 @@
-package com.jordilucas.meuhotel.repository
+package com.jordilucas.meuhotel.form
 
 import com.jordilucas.meuhotel.model.Hotel
 

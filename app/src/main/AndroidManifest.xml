@@ -10,8 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".details.HotelDetailsActivity"
-            android:parentActivityName=".HotelActivity"/>
-        <activity android:name=".HotelActivity"
+            android:parentActivityName=".common.HotelActivity"/>
+        <activity android:name=".common.HotelActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

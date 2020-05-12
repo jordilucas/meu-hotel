@@ -14,9 +14,6 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.jordilucas.meuhotel.R
 import com.jordilucas.meuhotel.model.Hotel
-import com.jordilucas.meuhotel.presenter.HotelListPresenter
-import com.jordilucas.meuhotel.repository.MemoryRepository
-import com.jordilucas.meuhotel.view.HotelListView
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class HotelListFragment: ListFragment(), AdapterView.OnItemLongClickListener, ActionMode.Callback {

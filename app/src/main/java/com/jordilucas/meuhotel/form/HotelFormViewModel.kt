@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.repository.HotelRepository
-import com.jordilucas.meuhotel.repository.HotelValidator
 
 class HotelFormViewModel(private val repository: HotelRepository):ViewModel() {
 
