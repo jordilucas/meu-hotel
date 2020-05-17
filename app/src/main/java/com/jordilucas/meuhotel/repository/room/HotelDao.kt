@@ -3,6 +3,7 @@ package com.jordilucas.meuhotel.repository.room
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.jordilucas.meuhotel.model.Hotel
+import com.jordilucas.meuhotel.repository.Status
 
 @Dao
 interface HotelDao{
@@ -12,8 +13,13 @@ interface HotelDao{
     fun update(hotel:Hotel):Int
     @Delete
     fun delete(vararg  hotels:Hotel):Int
-    @Query("SELECT * FROM $TABLE_HOTEL WHERE $COLUMN_ID = :id")
+    @Query("""SELECT * FROM $TABLE_HOTEL WHERE $COLUMN_ID = :id""")
     fun hotelById(id:Long):LiveData<Hotel>
-    @Query("""SELECT * FROM $TABLE_HOTEL WHERE $COLUMN_NAME LIKE :query ORDER BY $COLUMN_NAME""")
+    @Query("""SELECT * FROM $TABLE_HOTEL WHERE $COLUMN_SERVER_ID = :serverId""")
+    fun hotelByServerId(serverId: Long):Hotel?
+    @Query("""SELECT * FROM $TABLE_HOTEL WHERE $COLUMN_STATUS != ${Status.DELETE} AND 
+        $COLUMN_NAME LIKE :query ORDER BY $COLUMN_NAME""")
     fun search(query: String):LiveData<List<Hotel>>
+    @Query("""SELECT * FROM $TABLE_HOTEL WHERE $COLUMN_STATUS != ${Status.OK}""")
+    fun pending():List<Hotel>
 }
