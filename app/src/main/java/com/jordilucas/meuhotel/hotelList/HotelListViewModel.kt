@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.jordilucas.meuhotel.common.SingleLiveEvent
 import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.repository.HotelRepository
+import com.jordilucas.meuhotel.repository.Status
 
 class HotelListViewModel(private val repository: HotelRepository): ViewModel() {
 
@@ -67,7 +68,10 @@ class HotelListViewModel(private val repository: HotelRepository): ViewModel() {
     }
 
     fun deleteSelected(){
-        repository.remove(*selectedItems.toTypedArray())
+        selectedItems.forEach {
+            it.status = Status.DELETE
+            repository.update(it)
+        }
         deletedItems.clear()
         deletedItems.addAll(selectedItems)
         setInDeleteMode(false)
