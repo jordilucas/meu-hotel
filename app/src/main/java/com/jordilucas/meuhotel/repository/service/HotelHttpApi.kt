@@ -5,7 +5,7 @@ import com.jordilucas.meuhotel.repository.IdResult
 import retrofit2.Call
 import retrofit2.http.*
 
-interface HotelApi {
+interface HotelHttpApi {
 
     @GET("$WEB_SERVICE/{user}")
     fun listHotels(@Path("user") user:String ): Call<List<Hotel>>

@@ -3,7 +3,7 @@ package com.jordilucas.meuhotel.repository.service
 import com.jordilucas.meuhotel.repository.HotelRepository
 import com.jordilucas.meuhotel.repository.Status
 
-class HotelHttp(private val service: HotelApi, private val repository: HotelRepository,
+class HotelHttp(private val service: HotelHttpApi, private val repository: HotelRepository,
                 private val currenteUser: String) {
 
     fun syncronizeWithServer(){
@@ -54,6 +54,32 @@ class HotelHttp(private val service: HotelApi, private val repository: HotelRepo
         }
     }
 
-    private fun updateLocal(){}
+    private fun updateLocal(){
+        val response =  service.listHotels(currenteUser).execute()
+        if(response.isSuccessful){
+            val hotelsInServer = response.body()
+                ?.map { hotel ->
+                    hotel.apply {
+                        val id = hotel.id
+                        hotel.serverId = id
+                        hotel.id = 0
+                    }
+                }
+            hotelsInServer?.forEach{ hotel ->
+                hotel.status = Status.OK
+                val localHotel = repository.hotelByServerId(hotel.serverId ?: 0)
+                if(localHotel == null){
+                    repository.insert(hotel)
+                }else{
+                    hotel.id = localHotel.id
+                    repository.update(hotel)
+                }
+            }
+        }
+    }
+
+    companion object{
+        const val BASE_URL = "http://192.168.1.100/hotel_service"
+    }
 
 }
