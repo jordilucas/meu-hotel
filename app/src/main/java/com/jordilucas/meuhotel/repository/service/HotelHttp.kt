@@ -4,10 +4,10 @@ import com.jordilucas.meuhotel.repository.HotelRepository
 import com.jordilucas.meuhotel.repository.Status
 
 class HotelHttp(private val service: HotelHttpApi, private val repository: HotelRepository,
-                private val currenteUser: String) {
+                private val currentUser: String) {
 
     fun syncronizeWithServer(){
-        if(currenteUser.isBlank()){
+        if(currentUser.isBlank()){
             throw SecurityException("Usuario não encontrado")
         }else{
             sendPendingData()
@@ -20,7 +20,7 @@ class HotelHttp(private val service: HotelHttpApi, private val repository: Hotel
         pendingHotels.forEach { hotel ->
             when(hotel.status){
                 Status.INSERT ->{
-                    val result= service.insert(currenteUser, hotel).execute()
+                    val result= service.insert(currentUser, hotel).execute()
                     if(result.isSuccessful){
                         hotel.serverId = result.body()?.id?:0
                         hotel.status = Status.OK
@@ -30,7 +30,7 @@ class HotelHttp(private val service: HotelHttpApi, private val repository: Hotel
                 Status.DELETE -> {
                     val serverId = hotel.serverId ?: 0L
                     if(serverId !=0L){
-                        val result  = service.delete(currenteUser, serverId).execute()
+                        val result  = service.delete(currentUser, serverId).execute()
                         if(result.isSuccessful){
                             repository.remove(hotel)
                         }
@@ -40,9 +40,9 @@ class HotelHttp(private val service: HotelHttpApi, private val repository: Hotel
                 }
                 Status.UPDATE -> {
                     val result = if(hotel.serverId == 0L){
-                        service.insert(currenteUser, hotel).execute()
+                        service.insert(currentUser, hotel).execute()
                     }else{
-                        service.update(currenteUser, hotel.serverId ?: 0, hotel).execute()
+                        service.update(currentUser, hotel.serverId ?: 0, hotel).execute()
                     }
                     if(result.isSuccessful){
                         hotel.serverId = result?.body()?.id ?: 0
@@ -55,7 +55,7 @@ class HotelHttp(private val service: HotelHttpApi, private val repository: Hotel
     }
 
     private fun updateLocal(){
-        val response =  service.listHotels(currenteUser).execute()
+        val response =  service.listHotels(currentUser).execute()
         if(response.isSuccessful){
             val hotelsInServer = response.body()
                 ?.map { hotel ->
