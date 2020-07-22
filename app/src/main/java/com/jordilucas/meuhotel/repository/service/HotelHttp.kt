@@ -1,9 +1,18 @@
 package com.jordilucas.meuhotel.repository.service
 
+import android.util.Log
+import com.jordilucas.meuhotel.model.Hotel
 import com.jordilucas.meuhotel.repository.HotelRepository
 import com.jordilucas.meuhotel.repository.Status
+import com.jordilucas.meuhotel.repository.http.NoUploadPerformed
+import com.jordilucas.meuhotel.repository.http.UploadExecution
+import com.jordilucas.meuhotel.repository.http.UploadResult
+import com.jordilucas.meuhotel.repository.imagefiles.FindHotelPicture
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class HotelHttp(private val service: HotelHttpApi, private val repository: HotelRepository,
+                private val pictureFinder:FindHotelPicture,
                 private val currentUser: String) {
 
     fun syncronizeWithServer(){
@@ -24,6 +33,7 @@ class HotelHttp(private val service: HotelHttpApi, private val repository: Hotel
                     if(result.isSuccessful){
                         hotel.serverId = result.body()?.id?:0
                         hotel.status = Status.OK
+                        uploadHotelPhoto(hotel)
                         repository.update(hotel)
                     }
                 }
@@ -47,6 +57,7 @@ class HotelHttp(private val service: HotelHttpApi, private val repository: Hotel
                     if(result.isSuccessful){
                         hotel.serverId = result?.body()?.id ?: 0
                         hotel.status = Status.OK
+                        uploadHotelPhoto(hotel)
                         repository.update(hotel)
                     }
                 }
@@ -75,6 +86,35 @@ class HotelHttp(private val service: HotelHttpApi, private val repository: Hotel
                     repository.update(hotel)
                 }
             }
+        }
+    }
+
+    private fun uploadHotelPhoto(hotel:Hotel){
+        if(hotel.photoUrl.isNotEmpty() && hotel.photoUrl.startsWith("content:")){
+            val execution = uploadFile(hotel)
+            when(execution){
+                is UploadResult ->{
+                    Log.d("HOTEL", "Upload efetuado com sucesso")
+                }
+                is NoUploadPerformed ->{
+                    Log.e("HOTEL", "Erro ao efetuar upload")
+                }
+            }
+        }
+    }
+
+    private fun uploadFile(hotel:Hotel): UploadExecution{
+        return try {
+            val (sourceFile, mediaType) = pictureFinder.pictureFile(hotel)
+            val toUpload = RequestBody.create(mediaType, sourceFile)
+            val body = MultipartBody.Part.createFormData("hotel_photo", sourceFile.name, toUpload)
+            val description = RequestBody.create(MultipartBody.FORM, hotel.serverId.toString())
+            val response = service.uploadPhoto(description, body).execute()
+            if(response.isSuccessful) hotel.photoUrl = "$BASE_URL${response.body()?.photoUrl}"
+                response.body()?.let{it}
+                    ?:throw Throwable("Error at upload")
+        } catch (error: Throwable){
+            NoUploadPerformed
         }
     }
 

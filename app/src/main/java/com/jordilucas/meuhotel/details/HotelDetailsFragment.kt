@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.jordilucas.meuhotel.R
 import com.jordilucas.meuhotel.model.Hotel
+import com.jordilucas.meuhotel.repository.service.HotelHttp
 import kotlinx.android.synthetic.main.fragment_hotel_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -44,6 +46,13 @@ class HotelDetailsFragment: Fragment(){
         txtName.text = hotel.name
         txtAddress.text = hotel.address
         rbRatting.rating = hotel.rating
+        var photoUrl = hotel.photoUrl
+        if(photoUrl.isNotEmpty()){
+            if(!photoUrl.contains("content://")){
+                photoUrl = HotelHttp.BASE_URL + hotel.photoUrl
+            }
+            Glide.with(imgPhoto.context).load(photoUrl).into(imgPhoto)
+        }
     }
 
     private fun errorHotelNotFound() {
