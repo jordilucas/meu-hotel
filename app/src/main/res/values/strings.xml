@@ -15,6 +15,7 @@
     <string name="action_delete">Excluir</string>
     <string name="message_hotels_deleted">%d itens excluidos</string>
     <string name="undo">Desfazer</string>
+    <string name="error_sync">Erro ao sincronizar com servidor</string>
     <plurals name="list_hotel_selected">
         <item quantity="one">1 selecionado</item>
         <item quantity="other">%d selecionados</item>

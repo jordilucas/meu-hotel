@@ -5,7 +5,7 @@ import androidx.core.app.JobIntentService
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.koin.android.ext.android.inject
 
-class HoteIntentService: JobIntentService() {
+class HotelIntentService: JobIntentService() {
     override fun onHandleWork(intent: Intent) {
         val hotelHttp: HotelHttp by inject()
         val it = Intent(ACTION_SYNC)

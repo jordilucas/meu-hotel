@@ -14,11 +14,11 @@ import com.jordilucas.meuhotel.repository.service.HotelHttp
 import com.jordilucas.meuhotel.repository.service.HotelHttpApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.androidx.viewmodel.experimental.builder.viewModel
 import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 val androidModule = module {
     single { this }
@@ -41,21 +41,22 @@ val androidModule = module {
         ImageGalleryPictureFinder(uploadDir, resolver) as FindHotelPicture
     }
     single {
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
-        val httpClient = OkHttpClient.Builder()
-        httpClient.addInterceptor(logging)
 
+        val httpClient: OkHttpClient = OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .build()
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+       // val httpClient = OkHttpClient.Builder()
+        //httpClient.addInterceptor(logging)
         val gson = GsonBuilder()
             .setLenient()
             .create()
-
         val retrofit = Retrofit.Builder()
             .baseUrl(HotelHttp.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(httpClient.build())
+            .client(httpClient)
             .build()
-
         retrofit.create<HotelHttpApi>(HotelHttpApi::class.java)
 
     }

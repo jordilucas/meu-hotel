@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import com.jordilucas.meuhotel.model.Hotel
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.File
 import java.io.FileOutputStream
 import java.lang.Exception
@@ -14,12 +15,15 @@ class ImageGalleryPictureFinder(private val uploadsDir: File,
                                 private val resolver: ContentResolver):FindHotelPicture {
     override fun pictureFile(hotel: Hotel): PictureToUpload {
         val file = File(uploadsDir, "${hotel.id}.jpg")
-        if(file.exists() && !file.delete())
+        if (file.exists() && !file.delete())
             throw IllegalArgumentException("Cannot find picture for this hotel")
-        else{
+        else {
             val filePath = Uri.parse(hotel.photoUrl)
             saveImageFromUri(filePath, file)
-            return PictureToUpload(file, MediaType.parse(resolver.getType(filePath))!!)
+            return PictureToUpload(
+                file,
+                resolver.getType(filePath).toString().toMediaTypeOrNull()!!
+            )
         }
     }
 
